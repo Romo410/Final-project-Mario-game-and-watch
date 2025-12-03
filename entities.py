@@ -1,16 +1,14 @@
 class Package:
     def __init__(self, x, y):
-        self._x = 0
-        self._y = 0
+        self.__x = 0
+        self.__y = 0
+        self.aux_pkg = 0
         self.x = x
         self.y = y
-        self.w = 8
-        self.h = 8
-        self.color = 10
 
     @property
     def x(self):
-        return self._x
+        return self.__x
 
     @x.setter
     def x(self, value):
@@ -18,11 +16,11 @@ class Package:
             raise TypeError("x must be an integer")
         if value < 0:
             raise ValueError("x must be non-negative")
-        self._x = value
+        self.__x = value
 
     @property
     def y(self):
-        return self._y
+        return self.__y
 
     @y.setter
     def y(self, value):
@@ -30,12 +28,21 @@ class Package:
             raise TypeError("y must be an integer")
         if value < 0:
             raise ValueError("y must be non-negative")
-        self._y = value
+        self.__y = value
 
+
+    def pkg_move(self):
+        self.aux_pkg += 1 
+        if self.aux_pkg%7==0:
+            if self.y == 160 or self.y == 160-32 or self.y == 160-32*2 or self.y == 160-32*3 or self.y ==160-32*4:
+                self.x -= 10
+            else:
+                self.x += 10 
+        
 class Conveyor:
     def __init__(self, x, y, length, direction):
-        self._x = 0
-        self._y = 0
+        self.__x = 0
+        self.__y = 0
         self.x = x
         self.y = y
         self.length = length
@@ -44,7 +51,7 @@ class Conveyor:
 
     @property
     def x(self):
-        return self._x
+        return self.__x
 
     @x.setter
     def x(self, value):
@@ -52,11 +59,11 @@ class Conveyor:
             raise TypeError("x must be an integer")
         if value < 0:
             raise ValueError("x must be non-negative")
-        self._x = value
+        self.__x = value
 
     @property
     def y(self):
-        return self._y
+        return self.__y
 
     @y.setter
     def y(self, value):
@@ -64,12 +71,12 @@ class Conveyor:
             raise TypeError("y must be an integer")
         if value < 0:
             raise ValueError("y must be non-negative")
-        self._y = value
+        self.__y = value
 
 class Truck:
     def __init__(self, x, y):
-        self._x = 0
-        self._y = 0
+        self.__x = 0
+        self.__y = 0
         self.x = x
         self.y = y
         self.capacity = 8
@@ -77,7 +84,7 @@ class Truck:
 
     @property
     def x(self):
-        return self._x
+        return self.__x
 
     @x.setter
     def x(self, value):
@@ -85,11 +92,11 @@ class Truck:
             raise TypeError("x must be an integer")
         if value < 0:
             raise ValueError("x must be non-negative")
-        self._x = value
+        self.__x = value
 
     @property
     def y(self):
-        return self._y
+        return self.__y
 
     @y.setter
     def y(self, value):
@@ -97,4 +104,4 @@ class Truck:
             raise TypeError("y must be an integer")
         if value < 0:
             raise ValueError("y must be non-negative")
-        self._y = value
+        self.__y = value

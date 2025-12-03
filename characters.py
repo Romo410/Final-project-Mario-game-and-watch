@@ -23,13 +23,13 @@ class Character:
     def __init__(self, name: str, x: int, y: int, game):
         self.game = game
         self.name = name
-        self._x = x
-        self._y = y
+        self.__x = x
+        self.__y = y
         self.state = "idle"
 
     @property
     def x(self):
-        return self._x
+        return self.__x
 
     @x.setter
     def x(self, value):
@@ -37,11 +37,11 @@ class Character:
             raise TypeError("x must be an integer")
         if value < 0 or value > 256:
             raise ValueError("x must be non-negative")
-        self._x = value
+        self.__x = value
 
     @property
     def y(self):
-        return self._y
+        return self.__y
 
     @y.setter
     def y(self, value):
@@ -58,7 +58,7 @@ class Character:
         elif self.game.current_difficulty.name == "extreme":
             if value < 20:
                 raise ValueError("Character can't fly")
-        self._y = value
+        self.__y = value
         
 
     def move(self, direction: str):

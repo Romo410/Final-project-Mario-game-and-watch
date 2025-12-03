@@ -1,7 +1,7 @@
 import pyxel
 from entities import Conveyor, Truck, Package
 # Constants
-SCREEN_W = 308
+SCREEN_W = 312
 SCREEN_H = 192
 COLOR_BG = 7
 COLOR_TEXT = 7
@@ -23,6 +23,8 @@ class Renderer:
         
         self.draw_middle_column(game)
         
+        self.draw_package(game.package)
+
         self.draw_character(game.mario)
         self.draw_character(game.luigi)
 
@@ -130,8 +132,21 @@ class Renderer:
         # 3. Draw Right Border
         pyxel.blt(conveyor.x + conveyor.length - w_segment, conveyor.y, 0, u_border, v_border, w_segment+1, h, 0)
 
-    def draw_package(self, package,):
-        pyxel.rect(package.x, package.y, package.w, package.h, package.color)
+    def draw_package(self, package):
+        # Define sprites for each height (y): (u, v, w, h)
+        # TODO: Update these coordinates with the correct values from your assets
+        package_sprites = {
+            160: (35, 8),  # Example: Bottom level
+            128: (32, 24),  # Level 2
+            96: (32, 40),  # Level 3
+            64:  (32, 56),  # Level 4
+            32:  (32, 72),  # Top level
+        }
+        
+        if package.y in package_sprites:
+            u, v = package_sprites[package.y]
+            pyxel.blt(package.x, package.y, 0, u, v, 10, 8, 0)
+       
 
     def draw_character(self, character):
         from characters import SPRITES # Import SPRITES here to avoid circular dependency if needed, or move SPRITES to a shared file

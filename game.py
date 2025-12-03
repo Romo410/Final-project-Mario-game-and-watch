@@ -5,7 +5,7 @@ from entities import Truck, Conveyor, Package
 import time
 
 # Constants
-SCREEN_W = 256  
+SCREEN_W = 312  
 SCREEN_H = 192
 
 class Difficulty:
@@ -52,6 +52,7 @@ class Game:
         
         self.mario = Character("Mario", 212, 162, self)
         self.luigi = Character("Luigi", 38, 162-12, self)
+        self.package = Package(230, 160)
         
         pyxel.run(self.update, self.draw)
 
@@ -74,7 +75,7 @@ class Game:
         self.conveyors.append(Conveyor(230, 166, 36, 1))
 
     def update(self):
-        time.sleep(0.05)
+        time.sleep(0.1)
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
         
@@ -93,15 +94,16 @@ class Game:
             self.init_level()
 
 
-        if pyxel.btnp(pyxel.KEY_UP):
+        if pyxel.btn(pyxel.KEY_UP):
             self.mario.move("up")
-        if pyxel.btnp(pyxel.KEY_DOWN):
+        if pyxel.btn(pyxel.KEY_DOWN):
             self.mario.move("down")
-        if pyxel.btnp(pyxel.KEY_W):
+        if pyxel.btn(pyxel.KEY_W):
             self.luigi.move("up")
-        if pyxel.btnp(pyxel.KEY_S):
+        if pyxel.btn(pyxel.KEY_S):
             self.luigi.move("down")
 
+        self.package.pkg_move()
 
     def draw(self):
         self.renderer.draw_game(self)
