@@ -5,6 +5,7 @@ class Package:
         self.aux_pkg = 0
         self.x = x
         self.y = y
+#hghjghjgjg
 
     @property
     def x(self):
