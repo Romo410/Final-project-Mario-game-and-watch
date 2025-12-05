@@ -1,10 +1,13 @@
 class Package:
     def __init__(self, x, y):
-        self.__x = 0
+        self.__x = 0        
         self.__y = 0
         self.aux_pkg = 0
         self.x = x
         self.y = y
+        self.state = "normal"
+        self.caught = False
+        self.direction = ""
 
     @property
     def x(self):
@@ -31,13 +34,60 @@ class Package:
         self.__y = value
 
 
-    def pkg_move(self):
-        self.aux_pkg += 1 
-        if self.aux_pkg%7==0:
-            if self.y == 160 or self.y == 160-32 or self.y == 160-32*2 or self.y == 160-32*3 or self.y ==160-32*4:
+    def pkg_movement(self):
+        # Reset state to normal if it was falling (ensures 1-tick duration)
+        if self.state == "falling":
+            self.state = "normal"
+        self.aux_pkg += 1                   
+        # height change
+        if self.x <45:
+            if self.caught:
+                self.y -= 16
+                self.x += 10
+                self.state = "falling"
+            else:
+                 self.x -= 10 # Fall off
+        if self.x > 195 and self.y<152:
+            if self.caught:
+                self.y -= 16
                 self.x -= 10
+                self.state = "falling"
+            else:
+                self.x += 10 # Fall off
+
+        if self.aux_pkg%9==0:
+            #skip middle column
+            if self.x<152 and self.x>118 and self.direction == "left":
+                self.x=104
+            elif self.x>100 and self.x<150 and self.direction == "right":
+                self.x=150
+            #normal movement
+            elif self.y == 152 or self.y == 152-32 or self.y == 152-32*2 or self.y == 152-32*3 or self.y ==152-32*4:
+                self.x -= 10
+                self.direction = "left"
             else:
                 self.x += 10 
+                self.direction = "right"
+    
+    def check_proximity(self, character):
+        # Mario (Right side)
+        if character.name == "Mario":
+            if self.x > 175 and abs(self.y - character.y) < 15 and self.y > character.y:
+                if not self.caught:
+                    self.caught = True
+                    character.catch()
+                character.state = "prepared"
+
+
+        # Luigi (Left side)
+        elif character.name == "Luigi":
+            if self.x < 65 and abs(self.y - character.y) < 20 and self.y > character.y:
+                if not self.caught:
+                    self.caught = True
+                    character.catch()
+                character.state = "prepared"
+  
+        
         
 class Conveyor:
     def __init__(self, x, y, length, direction):
